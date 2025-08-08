@@ -27,19 +27,25 @@ public class SessionWebSocketApiHandler(ISessionService sessionService, IWebSock
         using var socket = await context.WebSockets.AcceptWebSocketAsync();
         var id = socketRegistry.Add(socket);
 
+        using var cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, context.RequestAborted);
+        var ct = cancellationTokenSource.Token;
+
         try
         {
-            await SendInitialSnapshotAsync(socket, cancellationToken);
+            await SendInitialSnapshotAsync(socket, ct);
 
             //Run sender and receiver concurrently
-            var senderTask = RunPeriodicSenderAsync(socket, cancellationToken);
-            var readerTask = RunReceiveLoopAsync(socket, cancellationToken);
+            var senderTask = RunPeriodicSenderAsync(socket, ct);
+            var readerTask = RunReceiveLoopAsync(socket, ct);
 
             //Waits until either loop finishes.
             await Task.WhenAny(senderTask, readerTask);
 
+            // Stop the other loop when one finishes
+            cancellationTokenSource.Cancel();
+
             //Ensures the other loop has actually finished and all code inside both loops has run.
-            await Task.WhenAll(senderTask, readerTask);
+            try { await Task.WhenAll(senderTask, readerTask); } catch (OperationCanceledException) { }
         }
         finally
         {
@@ -72,12 +78,15 @@ public class SessionWebSocketApiHandler(ISessionService sessionService, IWebSock
         //4kb receive buffer
         var buffer = new byte[4 * 1024];
 
-        while (!cancellationToken.IsCancellationRequested && socket.State == WebSocketState.Open)
+        try
         {
-            var result = await socket.ReceiveAsync(buffer, cancellationToken);
-            if (result.MessageType == WebSocketMessageType.Close)
-                break;
+            while (!cancellationToken.IsCancellationRequested && socket.State == WebSocketState.Open)
+            {
+                var result = await socket.ReceiveAsync(buffer, cancellationToken);
+                if (result.MessageType == WebSocketMessageType.Close) break;
+            }
         }
+        catch (OperationCanceledException) { /* normal on close */ }
     }
 
     private string SerializeSnapshot() =>
