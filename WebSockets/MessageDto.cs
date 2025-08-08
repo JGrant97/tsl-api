@@ -1,3 +1,3 @@
 ﻿namespace tsl_api.WebSockets;
 
-public record MessageDto(string type, object Date);
+public record MessageDto(string Type, object Date);

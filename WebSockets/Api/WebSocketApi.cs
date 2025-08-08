@@ -6,6 +6,7 @@ public static class WebSocketApi
     {
         var api = builder.MapGroup("/ws");
 
-        api.Map("/", async (HttpContext context, IWebSocketApiHandler handler) => await handler.HandleConnectionAsync(context));
+        api.Map("/", async (HttpContext context, IWebSocketApiHandler handler, CancellationToken cancellationToken) => 
+            await handler.HandleConnectionAsync(context, cancellationToken));
     }
 }

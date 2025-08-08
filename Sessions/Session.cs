@@ -1,4 +1,6 @@
-﻿namespace tsl_api.Sessions;
+﻿using System.Text.Json.Serialization;
+
+namespace tsl_api.Sessions;
 
 public class Session()
 {
@@ -14,5 +16,10 @@ public class Session()
 
     public DateTime? StartTime { get; set; }
 
-    public required TimeSpan Duration { get; set; }
+    [JsonIgnore]
+    public TimeSpan Duration { get; set; }
+
+    [JsonPropertyName("Duration")]
+    public string DurationFormatted => 
+        Duration.ToString(@"hh\:mm\:ss");
 }

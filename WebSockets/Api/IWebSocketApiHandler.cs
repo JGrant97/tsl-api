@@ -4,5 +4,5 @@ namespace tsl_api.WebSockets.Api;
 
 public interface IWebSocketApiHandler
 {
-    Task<Results<Ok, BadRequest>> HandleConnectionAsync(HttpContext context);
+    Task HandleConnectionAsync(HttpContext context, CancellationToken cancellationToken);
 }

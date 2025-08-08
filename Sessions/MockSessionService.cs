@@ -34,8 +34,8 @@ public sealed class MockSessionService : ISessionService
 
         _lastTickUtc = DateTime.UtcNow;
 
-        // Fire every 2 seconds
-        _timer = new Timer(_ => UpdateSessions(), null, dueTime: 0, period: 2000);
+        // Fire every 1 second
+        _timer = new Timer(_ => UpdateSessions(), null, dueTime: 0, period: 1000);
     }
 
     public IEnumerable<Session> GetSnapshot()
