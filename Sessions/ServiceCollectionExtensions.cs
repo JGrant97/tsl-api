@@ -9,8 +9,6 @@ public static class ServiceCollectionExtensions
     {
         //Is singleton because its in memeory, would be using scoped with EF Core db
         services.AddSingleton<ISessionService, MockSessionService>();
-
-        services.AddSingleton<IWebSocketRegistry, WebSocketRegistry>();
         services.AddSingleton<ISessionWebSocketApiHandler, SessionWebSocketApiHandler>();
     }
 }
