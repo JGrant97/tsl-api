@@ -1,4 +1,5 @@
 using Scalar.AspNetCore;
+using tsl_api.WebSockets;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddWebSocketServices();
 
 builder.Services.AddCors(options =>
 {
@@ -33,6 +35,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors(MyAllowSpecificOrigins);
 app.UseHttpsRedirection();
+app.UseWebSockets();
+
+app.MapWebSocketApi();
 
 var summaries = new[]
 {
