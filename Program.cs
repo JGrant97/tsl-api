@@ -1,5 +1,6 @@
 using Scalar.AspNetCore;
 using tsl_api.WebSockets;
+using tsl_api.WebSockets.Api;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 

@@ -1,4 +1,4 @@
-﻿namespace tsl_api.WebSockets;
+﻿namespace tsl_api.WebSockets.Api;
 
 public static class WebSocketApi
 {
@@ -6,6 +6,6 @@ public static class WebSocketApi
     {
         var api = builder.MapGroup("/ws");
 
-        api.Map("/", async (HttpContext context, IWebSocketApiHandler handler) => await handler.Add(context));
+        api.Map("/", async (HttpContext context, IWebSocketApiHandler handler) => await handler.HandleConnectionAsync(context));
     }
 }
