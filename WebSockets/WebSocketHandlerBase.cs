@@ -45,8 +45,6 @@ public abstract class WebSocketHandlerBase
             //Run sender and receiver concurrently
             var senderTask = RunPeriodicSenderAsync(socket, ct);
             var readerTask = RunReceiveLoopAsync(socket, ct);
-            //Waits until either loop finishes.
-            await Task.WhenAny(senderTask, readerTask);
 
             // Stop the other loop when one finishes
             await Task.WhenAny(senderTask, readerTask);
