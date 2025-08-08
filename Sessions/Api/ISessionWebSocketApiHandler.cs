@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 
-namespace tsl_api.WebSockets.Api;
+namespace tsl_api.Sessions.Api;
 
-public interface IWebSocketApiHandler
+public interface ISessionWebSocketApiHandler
 {
     Task HandleConnectionAsync(HttpContext context, CancellationToken cancellationToken);
 }

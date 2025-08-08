@@ -1,6 +1,6 @@
 using Scalar.AspNetCore;
-using tsl_api.WebSockets;
-using tsl_api.WebSockets.Api;
+using tsl_api.Sessions;
+using tsl_api.Sessions.Api;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-builder.Services.AddWebSocketServices();
+builder.Services.AddSessionServices();
 
 builder.Services.AddCors(options =>
 {
@@ -39,7 +39,7 @@ app.UseHttpsRedirection();
 app.UseWebSockets();
 
 //Add Api Endpoints
-app.MapWebSocketApi();
+app.MapSessionApi();
 
 app.Run();
 

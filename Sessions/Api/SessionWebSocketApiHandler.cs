@@ -2,10 +2,11 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using tsl_api.Sessions;
+using tsl_api.WebSockets;
 
-namespace tsl_api.WebSockets.Api;
+namespace tsl_api.Sessions.Api;
 
-public class WebSocketApiHandler(ISessionService sessionService, IWebSocketRegistry socketRegistry) : IWebSocketApiHandler
+public class SessionWebSocketApiHandler(ISessionService sessionService, IWebSocketRegistry socketRegistry) : ISessionWebSocketApiHandler
 {
     private static readonly TimeSpan PushInterval = TimeSpan.FromSeconds(1);
 

@@ -4,7 +4,6 @@ public sealed class MockSessionService : ISessionService
 {
     private readonly object _lock = new();
     private readonly Timer _timer;
-    private readonly Random _rng = new();
     private readonly List<Session> _sessions;
     private DateTime _lastTickUtc;
 
@@ -38,6 +37,7 @@ public sealed class MockSessionService : ISessionService
         _timer = new Timer(_ => UpdateSessions(), null, dueTime: 0, period: 1000);
     }
 
+    //The lock ensures that reading and writing the collection never happen at the same time
     public IEnumerable<Session> GetSnapshot()
     {
         lock (_lock)
